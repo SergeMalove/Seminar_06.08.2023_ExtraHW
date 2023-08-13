@@ -12,12 +12,12 @@
 
 // P. S. Я не использовал массивы, только цикл и ветвление.
 
-int GetDigit(int number, int degree)
+int GetDigit(int number, int degree)         // Функция получения цифры из числа по его разряду в числе
 {
     return number % (int)Math.Pow(10, degree) / (int)Math.Pow(10, degree - 1);
 }
 
-int GetDegree(int number)
+int GetDegree(int number)                    // Функция получения разрядности числа
 {
     int degree = 1;
     while (number / 10 > 0)
@@ -28,28 +28,39 @@ int GetDegree(int number)
     return degree;
 }
 
-int Swap(int number, int digit1, int digit2, int degree)
+int Swap(int number, int digit1, int digit2, int degree)   // Функция замены двух чисел местами
 {
     int pow = (int)Math.Pow(10, degree);
     return number - digit1 * pow - digit2 * (pow / 10) + digit2 * pow + digit1 * (pow / 10);
 }
 
-System.Console.Write("Введите целое натуральное число: ");
-int num = int.Parse(Console.ReadLine());
-int degree = GetDegree(num);
-bool flag = true;
+int MoveDigits(int number)                  // Функция перемещения чисел. Для ускорения работы
+{                                           // программы за одну итерацию по циклу нечётные числа 
+    int degree = GetDegree(number);         // двигаются влево, четные вправо (два последовательных
+    bool flag = true;                       // условия в цикле)
 
-while (flag)
-{
-    flag = false;
-    for (int i = 1; i < degree; i++)
+    while (flag)
     {
-        if (GetDigit(num, i) % 2 != 0 && GetDigit(num, i + 1) % 2 == 0)
+        flag = false;
+        for (int i = 1; i < degree; i++)
         {
-            num = Swap(num, GetDigit(num, i + 1), GetDigit(num, i), i);
-            flag = true;
+            if (GetDigit(number, i + 1) % 2 == 0 && GetDigit(number, i) % 2 != 0)
+            {
+                number = Swap(number, GetDigit(number, i + 1), GetDigit(number, i), i);
+                flag = true;
+            }
+            if (GetDigit(number, degree - i + 1) % 2 == 0 && GetDigit(number, degree - i) % 2 != 0)
+            {
+                number = Swap(number, GetDigit(number, degree - i + 1), GetDigit(number, degree - i), degree - i);
+                flag = true;
+            }
         }
     }
+
+    return number;
 }
 
-System.Console.WriteLine(num);
+System.Console.Write("Введите целое натуральное число: ");
+int num = int.Parse(Console.ReadLine());
+
+System.Console.WriteLine(MoveDigits(num));
