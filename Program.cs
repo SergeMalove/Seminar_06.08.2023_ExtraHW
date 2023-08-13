@@ -12,12 +12,33 @@
 
 // P. S. Я не использовал массивы, только цикл и ветвление.
 
+ulong EnterNumber()     // Функция ввода числа с проверкой
+{
+    ulong number = 0;   // По хорошему тут надо бы присвоить -1, но тогда придется использовать long,
+    while(true)         // а это значит, что число будет иметь на 12 разрядов меньше
+    {
+        System.Console.Write("Введите натуральное целое число (максимум 25 разрядов): ");  // ulong может и 26, но пусть будет один в запасе
+        string sNumber = Console.ReadLine()!;
+        try
+        {
+            number = ulong.Parse(sNumber);
+            break;
+        }
+        catch (System.Exception)
+        {
+            System.Console.WriteLine("Неправильный ввод числа. Повторите ввод.");
+        }
+    }
+
+    return number;
+}
+
 ulong GetDigit(ulong number, int degree)         // Функция получения цифры из числа по его разряду в числе
 {
     return number % (ulong)Math.Pow(10, degree) / (ulong)Math.Pow(10, degree - 1);
 }
 
-int GetDegree(ulong number)                    // Функция получения разрядности числа
+int GetDegree(ulong number)                      // Функция получения разрядности числа
 {
     int degree = 1;
     while (number / 10 > 0)
@@ -42,7 +63,7 @@ ulong MoveDigits(ulong number)              // Функция перемещен
     while (flag)
     {
         flag = false;
-        for (int i = 1; i < degree; i++)
+        for (int i = 1; i < degree; i++)    // В условиях проверям два рядомстоящих числа, и если что меняем их местами
         {
             if (GetDigit(number, i + 1) % 2 == 0 && GetDigit(number, i) % 2 != 0)
             {
@@ -60,7 +81,4 @@ ulong MoveDigits(ulong number)              // Функция перемещен
     return number;
 }
 
-System.Console.Write("Введите целое натуральное число: ");
-ulong num = ulong.Parse(Console.ReadLine());
-
-System.Console.WriteLine(MoveDigits(num));
+System.Console.WriteLine("Результат работы программы: " + MoveDigits(EnterNumber()));
