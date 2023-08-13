@@ -12,12 +12,12 @@
 
 // P. S. Я не использовал массивы, только цикл и ветвление.
 
-int GetDigit(int number, int degree)         // Функция получения цифры из числа по его разряду в числе
+ulong GetDigit(ulong number, int degree)         // Функция получения цифры из числа по его разряду в числе
 {
-    return number % (int)Math.Pow(10, degree) / (int)Math.Pow(10, degree - 1);
+    return number % (ulong)Math.Pow(10, degree) / (ulong)Math.Pow(10, degree - 1);
 }
 
-int GetDegree(int number)                    // Функция получения разрядности числа
+int GetDegree(ulong number)                    // Функция получения разрядности числа
 {
     int degree = 1;
     while (number / 10 > 0)
@@ -28,13 +28,13 @@ int GetDegree(int number)                    // Функция получени�
     return degree;
 }
 
-int Swap(int number, int digit1, int digit2, int degree)   // Функция замены двух чисел местами
+ulong Swap(ulong number, ulong digit1, ulong digit2, int degree)   // Функция замены двух чисел местами
 {
-    int pow = (int)Math.Pow(10, degree);
+    ulong pow = (ulong)Math.Pow(10, degree);
     return number - digit1 * pow - digit2 * (pow / 10) + digit2 * pow + digit1 * (pow / 10);
 }
 
-int MoveDigits(int number)                  // Функция перемещения чисел. Для ускорения работы
+ulong MoveDigits(ulong number)              // Функция перемещения чисел. Для ускорения работы
 {                                           // программы за одну итерацию по циклу нечётные числа 
     int degree = GetDegree(number);         // двигаются влево, четные вправо (два последовательных
     bool flag = true;                       // условия в цикле)
@@ -61,6 +61,6 @@ int MoveDigits(int number)                  // Функция перемещен
 }
 
 System.Console.Write("Введите целое натуральное число: ");
-int num = int.Parse(Console.ReadLine());
+ulong num = ulong.Parse(Console.ReadLine());
 
 System.Console.WriteLine(MoveDigits(num));
